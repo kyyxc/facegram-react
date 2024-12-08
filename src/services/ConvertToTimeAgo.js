@@ -1,32 +1,15 @@
-export const timeAgo = (date) => {
-    const seconds = Math.floor((new Date() - date) / 1000);
-  
-    let interval = Math.floor(seconds / 31536000);
-    if (interval > 1) {
-      return interval + ' years ago';
-    }
-  
-    interval = Math.floor(seconds / 2592000);
-    if (interval > 1) {
-      return interval + ' months ago';
-    }
-  
-    interval = Math.floor(seconds / 86400);
-    if (interval > 1) {
-      return interval + ' days ago';
-    }
-  
-    interval = Math.floor(seconds / 3600);
-    if (interval > 1) {
-      return interval + ' hours ago';
-    }
-  
-    interval = Math.floor(seconds / 60);
-    if (interval > 1) {
-      return interval + ' minutes ago';
-    }
-  
-    if(seconds < 10) return 'just now';
-    
-    return Math.floor(seconds) + ' seconds ago';
-  };
+export const calculateTimeAgo = (dateString) => {
+  const eventDate = new Date(dateString);
+  const now = new Date();
+  const difference = now - eventDate; // Difference in milliseconds
+
+  const seconds = Math.floor(difference / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (days > 0) return `${days} days ago`;
+  if (hours > 0) return `${hours} hours ago`;
+  if (minutes > 0) return `${minutes} minutes ago`;
+  return `${seconds} seconds ago`;
+};

@@ -1,12 +1,14 @@
-import { Follow } from "../../api/user";
+import { Follow, Unfollow } from "../../api/user";
 
-export const FollowButton = ({ status, is_my_account, username, setStatus }) => {
-  console.log(is_my_account);
-  
+export const FollowButton = ({ status, is_my_account, username, setStatus, setFollowersCount }) => {  
   const handleFollow = (username) => {
-    Follow(username, setStatus);
+    Follow(username, setStatus, setFollowersCount);
     console.log(status);
   };
+
+  const handlleUnFollow = () => {
+    Unfollow(username, setStatus, setFollowersCount, status)
+  }
   if (is_my_account) {
     return (
       <a href="/create" className="btn btn-primary w-100 mb-2">
@@ -23,7 +25,7 @@ export const FollowButton = ({ status, is_my_account, username, setStatus }) => 
     } else if (status == "requested") {
       return (
         <a
-          href="user-profile-private.html"
+        onClick={() => handlleUnFollow(username)}
           className="btn btn-secondary w-100 mb-2"
         >
           Requested
@@ -31,7 +33,7 @@ export const FollowButton = ({ status, is_my_account, username, setStatus }) => 
       );
     } else if (status === "following") {
       return (
-        <a href="user-profile.html" className="btn btn-secondary w-100 mb-2">
+        <a onClick={() => handlleUnFollow(username)} className="btn btn-secondary w-100 mb-2">
           Following
         </a>
       );

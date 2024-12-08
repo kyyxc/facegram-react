@@ -10,7 +10,7 @@ export const GetUserProfile = async (username, setUser) => {
   try {
     const res = await ax.get(`/v1/users/${username}`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
     setUser(res.data.data);
@@ -65,7 +65,7 @@ export const AcceptFollowers = async (username) => {
       {},
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }
     );
@@ -75,7 +75,7 @@ export const AcceptFollowers = async (username) => {
   }
 };
 
-export const Follow = async (username, setStatus) => {
+export const Follow = async (username, setStatus, setFollowersCount) => {
   try {
     const res = await ax.post(
       `/v1/users/${username}/follow`,
@@ -87,6 +87,30 @@ export const Follow = async (username, setStatus) => {
       }
     );
     setStatus(res.data.status);
+    if (res.data.status == "following") {
+      setFollowersCount((prev) => prev + 1);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const Unfollow = async (
+  username,
+  setStatus,
+  setFollowersCount,
+  status
+) => {
+  try {
+    await ax.delete(`v1/users/${username}/unfollow`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    setStatus("not-following");
+    if (status != "requested") {
+      setFollowersCount((prev) => prev - 1);
+    }
   } catch (err) {
     console.log(err);
   }

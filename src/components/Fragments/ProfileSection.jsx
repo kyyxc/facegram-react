@@ -8,7 +8,9 @@ export const ProfileSection = ({
   username,
   status,
   setStatus,
-  isMyAccount
+  isMyAccount,
+  followersCount,
+  setFollowersCount
 }) => {
   return (
     <div className="px-5 py-4 bg-light mb-4 d-flex align-items-center justify-content-between">
@@ -27,6 +29,7 @@ export const ProfileSection = ({
             status={status}
             setStatus={setStatus}
             isMyAccount={isMyAccount}
+            setFollowersCount={setFollowersCount}
           ></FollowButton>
         )}
 
@@ -36,7 +39,7 @@ export const ProfileSection = ({
               <b>{user.posts_count}</b> posts
             </div>
           </div>
-          <ProfileDropdown user={user} followers={followers} />
+          <ProfileDropdown user={user} followers={followers} followersCount={followersCount} />
           <ProfileDropdown user={user} following={following} />
         </div>
       </div>

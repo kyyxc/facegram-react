@@ -1,9 +1,11 @@
-export const ProfilePost = ({user}) => {
-  
+export const ProfilePost = ({ user, isMyAccount }) => {
   if (
-    (!user.is_your_account) ||
-    (user.is_private && user.following_status == "requested") ||
-    (user.is_private && user.following_status == "not-following" && user.is_your_account == false) 
+    (user.is_private &&
+      user.following_status == "requested" &&
+      isMyAccount == false  ) ||
+    (user.is_private &&
+      user.following_status == "not-following" &&
+      isMyAccount == false)
   ) {
     return (
       <div className="card py-4">

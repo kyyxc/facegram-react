@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getFollowers, getFollowing, GetUserProfile } from "../api/user";
 
-import { ProfileSection } from "../components/Fragments/ProfileSection";
 import { LayoutPage } from "../components/Layout/LayoutPage";
 import { ProfilePost } from "../components/Fragments/ProfilePost";
+import {ProfileSection} from "../components/Fragments/ProfileSection"
+
 
 export const ProfilePage = () => {
   const profile = JSON.parse(localStorage.getItem("user"));
@@ -15,6 +16,7 @@ export const ProfilePage = () => {
   const navigate = useNavigate();
   const [status, setStatus] = useState();
   const [isMyAccount, setIsMyAccount] = useState(false);
+  const [followersCount, setFollowersCount] = useState();
 
   useEffect(() => {
     if (username) {
@@ -28,6 +30,7 @@ export const ProfilePage = () => {
     if (user) {
       setStatus(user.following_status);
       setIsMyAccount(user.is_your_account);
+      setFollowersCount(user.followers_count);
     }
   }, [user]);
 
@@ -41,19 +44,23 @@ export const ProfilePage = () => {
       {user && (
         <main className="mt-5">
           <div className="container py-5">
-            {user && followers && following && (
-              <ProfileSection
-                user={user}
-                followers={followers}
-                following={following}
-                username={username}
-                status={status}
-                isMyAccount={isMyAccount}
-                setStatus={setStatus}
-              ></ProfileSection>
+            {user  && followers && following && (
+                <ProfileSection
+                  user={user}
+                  followers={followers}
+                  following={following}
+                  username={username}
+                  status={status}
+                  isMyAccount={isMyAccount}
+                  setStatus={setStatus}
+                  followersCount={followersCount}
+                  setFollowersCount={setFollowersCount}
+                ></ProfileSection>
+  
             )}
 
-            <ProfilePost user={user}></ProfilePost>
+              <ProfilePost user={user} isMyAccount={isMyAccount}></ProfilePost>
+
           </div>
         </main>
       )}

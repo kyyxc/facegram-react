@@ -4,6 +4,7 @@ import { LayoutPage } from "../components/Layout/LayoutPage";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Explore from "../components/Fragments/Explore";
+import { calculateTimeAgo } from "../services/ConvertToTimeAgo";
 
 const FollowRequest = lazy(() =>
   import("../components/Fragments/FollowRequest")
@@ -52,9 +53,6 @@ export const HomePage = () => {
     }
   }, [user]);
 
-  const handleAcceptFollowers = (username) => {
-    AcceptFollowers(username);
-  };
 
   useEffect(() => {
     page == 0 ? getPost(page, 10) : LoadMorePost();
@@ -89,9 +87,14 @@ export const HomePage = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [loading]);
 
+
+  const handleAcceptFollowers = (username) => {
+    AcceptFollowers(username);
+  };
+
   return (
     <>
-      {user && (
+      {user && followers && people && (
         <LayoutPage user={user}>
           <main className="mt-5">
             <div className="container py-5">
@@ -106,7 +109,7 @@ export const HomePage = () => {
                         <div className="card-header d-flex align-items-center justify-content-between bg-transparent py-3">
                           <h6 className="mb-0">{post.user.full_name}</h6>
                           <small className="text-muted">
-                            {post.created_at}
+                            {calculateTimeAgo(post.created_at)}
                           </small>
                         </div>
                         <div className="card-body">
@@ -134,6 +137,9 @@ export const HomePage = () => {
                   {loading && <p>Loading...</p>}
                 </div>
                 <div className="col-md-4">
+
+
+
                   {followers && (
                     <Suspense fallback={<div>Loading</div>}>
                       <FollowRequest
@@ -142,6 +148,9 @@ export const HomePage = () => {
                       ></FollowRequest>
                     </Suspense>
                   )}
+
+
+
                   <div className="explore-people">
                     <h6 className="mb-3">Explore People</h6>
                     <div className="explore-people-list">

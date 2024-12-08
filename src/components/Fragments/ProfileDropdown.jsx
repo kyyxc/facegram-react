@@ -1,12 +1,12 @@
 import { ProfileList } from "./ProfileList";
 
-export const ProfileDropdown = ({ user, followers, following }) => {
+export const ProfileDropdown = ({ user, followers, following, followersCount }) => {
   if (followers) {
     return (
       <div className="profile-dropdown">
         <div className="profile-label">
           <p>
-            <b>{user.followers_count}</b> followers
+            <b>{followersCount}</b> followers
           </p>
         </div>
         <ProfileList follow={followers}></ProfileList>
